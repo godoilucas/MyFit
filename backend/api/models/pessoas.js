@@ -14,9 +14,28 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Pessoas.init({
-    nome: DataTypes.STRING,
+    nome: {
+      type: DataTypes.STRING,
+      validate: {
+        funcaoValidadora: function(dado){
+          if(dado.length<3) throw new Error("O campo nome deve conter mais de 3 caracteres");
+        }
+      }
+    },
     ativo: DataTypes.BOOLEAN,
-    email: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isEmail: {
+          args: true,
+          msg: "dado do tipo e-mail inválido"
+        }
+      },
+      unique: {
+        msg: "e-mail já cadastrado na plataforma"
+      }
+    },
     data_nascimento: DataTypes.DATE
   }, {
     sequelize,

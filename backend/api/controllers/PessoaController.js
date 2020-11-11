@@ -23,11 +23,15 @@ class PessoaController{
 
             pessoa.data_nascimento = utils.formataData(pessoa.data_nascimento, "DD/MM/YYYY", "YYYY-MM-DD");
 
-            return res.status(201).json(pessoa);
+            const novaPessoa = await database.Pessoas.create(pessoa);
+
+            return res.status(201).json(novaPessoa);
         } catch (error) {
             return res.status(500).json(error.message);
         }
     }
+
+    
 
 
 }
