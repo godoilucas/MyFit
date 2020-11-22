@@ -2,14 +2,58 @@ const database = require("../models");
 const utils = require("./Utilidades");
 
 class PessoaController{
+    /*
+    * Função responsável por listar todas as pessoas que possuem status ativo como true;
+    */
     async listaPessoas(req, res){
         try {
             const pessoas = await database.Pessoas.findAll();
+            return res.status(200).json(pessoas);
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
+    }
+
+    /*
+    * Função resposável por listar todas as pessoas, independente do status de ativo ou não
+    */
+    async listaTodasPessoas(req, res){
+        try {
+            const pessoas = await database.Pessoas.scope("todos").findAll();
             
             return res.status(200).json(pessoas);
         } catch (error) {
             return res.status(500).json(error.message);
         }
+    }
+
+    /*
+    * Função responsável por listar a pessoa buscando seu ID na base.
+    * Lista independente do status ativo ser true ou false.
+    */
+    async listaPessoasPorId(req, res){
+        const { id } = req.params;
+        try {
+            const pessoa = await database.Pessoas.scope("todos").findOne({where:{ id: Number(id) }});
+
+            return res.status(200).json(pessoa);
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
+    }
+    
+    /*
+    * Função responsável por listar a pessoa buscando seu e-mail na base.
+    * Lista independente do status ativo ser true ou false.
+    */
+    async listaPessoasPorEmail(email){
+    try {
+        const pessoa = await database.Pessoas.scope("todos").findOne({where:{ email: email }});
+
+        return pessoa;
+    } catch (error) {
+        return error.message;
+    }
     }
 
     /*
@@ -33,9 +77,13 @@ class PessoaController{
         }
     }
 
+    async atualizaPessoa(req, res){
+
+    }
     
+    async deletaPessoa(req, res){
 
-
+    }
 }
 
 module.exports = PessoaController;
