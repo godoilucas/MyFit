@@ -78,11 +78,24 @@ class PessoaController{
     }
 
     async atualizaPessoa(req, res){
+        const {id} = req.params;
+        const dados = req.body;
 
+        try {
+            
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
     }
     
     async deletaPessoa(req, res){
-
+        const {id} = req.params;
+        
+        try {
+            
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
     }
 }
 
